@@ -25,6 +25,9 @@ btnGridGen.addEventListener('click', function(){
     console.log(randomNums);
     console.log(randomCellNums);
     
+    // Variabile per il punteggio
+    let punteggio = 0;
+
     // Aggiungo celle a 'gridCont'
     for (let i = 1; i <= cellNum; i++) {
 
@@ -37,6 +40,7 @@ btnGridGen.addEventListener('click', function(){
         // Aggiungo la cella a 'gridCont'
         gridContainer.append(gridCell);
 
+
         //Aggiungo azione al click sulla cella
         gridCell.addEventListener('click', function() {
 
@@ -47,7 +51,7 @@ btnGridGen.addEventListener('click', function(){
                 let newHTML = `<img src="./img/pepe-the-frog.webp" alt="">`;
                 gridCell.insertAdjacentHTML('beforeend',newHTML);
                 // Stampo scritta 'hai perso
-                let youLooseDiv = `<div class="youloose">HAI PERSO</div>`;
+                let youLooseDiv = `<div class="youloose badge text-bg-dark">HAI PERSO <br> PUNTEGGIO: ${punteggio} </div>`;
                 gridContainer.insertAdjacentHTML('beforeend',youLooseDiv);
 
             } else {
@@ -55,6 +59,8 @@ btnGridGen.addEventListener('click', function(){
                 // Cambio colore sfondo a cella
                 gridCell.classList.add('gridCellClick');
                 console.log('Hai cliccato sulla cella ' + gridCell.innerHTML);
+                // Aggiungo 1 al punteggio
+                punteggio += 1;
 
             }
 
