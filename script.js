@@ -4,17 +4,20 @@
 let gridContainer = document.getElementById('gridCont');
 // Variabile agganciata al button
 let btnGridGen = document.getElementById('btnGridGen');
+// Variabile agganciata al select
+let selectDifficulty = document.getElementById('difficulty');
 
 // Event listener del button
 btnGridGen.addEventListener('click', function(){
     
-    // Cancello tutti i figli di 'gridCont', così al click si azzera la griglia
-    while (gridContainer.hasChildNodes()) {
-        gridContainer.removeChild(gridContainer.firstChild);
-    }
+    // Cancello il contenuto di 'gridCont', così al click si azzera la griglia
+    gridContainer.innerHTML = '';
     
-    // Scelgo 10 numeri random e stabilisco le celle che avranno pepe the frog
-    let randomNums = Array.from({length: 10}, () => Math.floor(Math.random() * 100));
+    // creo variabile per numero celle
+    let cellNum = Number(selectDifficulty.value);
+    
+    // Scelgo 16 numeri random che diranno quali celle hanno la bomba
+    let randomNums = Array.from({length: 16}, () => Math.floor(Math.random() * cellNum));
     let randomCellNums = [];
     for (let i= 0; i < randomNums.length; i++) {
         randomCellNums[i] = ('cellNum' + randomNums[i]);
@@ -23,12 +26,13 @@ btnGridGen.addEventListener('click', function(){
     console.log(randomCellNums);
     
     // Aggiungo celle a 'gridCont'
-    for (let i = 1; i <= 100; i++) {
+    for (let i = 1; i <= cellNum; i++) {
 
         // creazione singola cella con le relative classi
         let gridCell = document.createElement('div');
         gridCell.classList.add('gridCell');
         gridCell.classList.add(('cellNum' + i));
+        gridCell.style.width = ((100 / Math.sqrt(cellNum)) + '%');
         gridCell.innerHTML = i;
         // Aggiungo la cella a 'gridCont'
         gridContainer.append(gridCell);
@@ -38,7 +42,7 @@ btnGridGen.addEventListener('click', function(){
 
             if (randomCellNums.includes(gridCell.classList[1])) {
 
-                // Rimuovo numero da cella e mostro pepe th frog
+                // Rimuovo numero da cella e mostro pepe the frog
                 gridCell.removeChild(gridCell.firstChild);
                 let newHTML = `<img src="./img/pepe-the-frog.webp" alt="">`;
                 gridCell.insertAdjacentHTML('beforeend',newHTML);
@@ -60,13 +64,3 @@ btnGridGen.addEventListener('click', function(){
 
 })
 
-
-/*
-function youLoose () {
-
-    for (let i = 0; i < randomCellNums.length; i++) {
-
-    }
-
-}
-*/
