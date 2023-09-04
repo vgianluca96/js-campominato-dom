@@ -26,13 +26,19 @@ btnGridGen.addEventListener('click', function(){
     let bombsNum = 16;
 
     // Creo array di numeri random per le celle con la bomba
-    let randomNums = Array.from({length: bombsNum}, () => Math.floor(Math.random() * cellNum));
-    let randomCellNums = [];
-    for (let i= 0; i < randomNums.length; i++) {
-        randomCellNums[i] = ('cellNum' + randomNums[i]);
+    let bombCellId = [];
+    let i = 0;
+    while (bombCellId.length < bombsNum) {
+
+        let randomNumber = Math.floor(Math.random() * cellNum) + 1;
+        if (!(bombCellId.includes(randomNumber))) {
+            bombCellId[i] = randomNumber;
+            i++ 
+        }
+
     }
-    console.log(randomNums);
-    console.log(randomCellNums);
+
+    console.log(bombCellId);
     
     // Aggiungo celle a 'gridCont'
     for (let i = 1; i <= cellNum; i++) {
@@ -40,7 +46,6 @@ btnGridGen.addEventListener('click', function(){
         // creazione singola cella con le relative classi
         let gridCell = document.createElement('div');
         gridCell.classList.add('gridCell');
-        gridCell.classList.add(('cellNum' + i));
         gridCell.style.width = ((100 / Math.sqrt(cellNum)) + '%');
         gridCell.innerHTML = i;
         // Aggiungo la cella a 'gridCont'
@@ -50,7 +55,8 @@ btnGridGen.addEventListener('click', function(){
         gridCell.addEventListener('click', function() {
 
             if (active) {
-                if (randomCellNums.includes(gridCell.classList[1])) {
+
+                if (bombCellId.includes(Number(gridCell.innerHTML))) {
     
                     // Rimuovo numero da cella e mostro pepe the frog
                     gridCell.removeChild(gridCell.firstChild);
@@ -79,6 +85,7 @@ btnGridGen.addEventListener('click', function(){
                     }
     
                 }
+
             }
 
         })
