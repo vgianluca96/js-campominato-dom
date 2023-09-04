@@ -1,0 +1,44 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: lightblue;
+}
+
+.gridCell {
+    width: calc(100% /10);
+    aspect-ratio: 1 / 1;
+    border: 1px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gridCellClick {
+    background-color: rgb(50, 90, 230);
+    color: white;
+}
+
+img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}
+
+#gridCont {
+    position: relative;
+}
+
+.youloose {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    color: red;
+    font-weight: bold;
+    font-size: 36px;
+}
