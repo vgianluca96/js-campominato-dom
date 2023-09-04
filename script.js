@@ -13,11 +13,20 @@ btnGridGen.addEventListener('click', function(){
     // Cancello il contenuto di 'gridCont', così al click si azzera la griglia
     gridContainer.innerHTML = '';
     
-    // creo variabile per numero celle
+    // Creo variabile per numero celle
     let cellNum = Number(selectDifficulty.value);
     
-    // Scelgo 16 numeri random che diranno quali celle hanno la bomba
-    let randomNums = Array.from({length: 16}, () => Math.floor(Math.random() * cellNum));
+    // Creo variabile per il punteggio
+    let score = 0;
+
+    // Creo variabile per disattivare celle se partita termina
+    let active = true;
+
+    // Scelgo numero bombe
+    let bombsNum = 16;
+
+    // Creo array di numeri random per le celle con la bomba
+    let randomNums = Array.from({length: bombsNum}, () => Math.floor(Math.random() * cellNum));
     let randomCellNums = [];
     for (let i= 0; i < randomNums.length; i++) {
         randomCellNums[i] = ('cellNum' + randomNums[i]);
@@ -25,9 +34,6 @@ btnGridGen.addEventListener('click', function(){
     console.log(randomNums);
     console.log(randomCellNums);
     
-    // Variabile per il punteggio
-    let punteggio = 0;
-
     // Aggiungo celle a 'gridCont'
     for (let i = 1; i <= cellNum; i++) {
 
@@ -40,28 +46,39 @@ btnGridGen.addEventListener('click', function(){
         // Aggiungo la cella a 'gridCont'
         gridContainer.append(gridCell);
 
-
         //Aggiungo azione al click sulla cella
         gridCell.addEventListener('click', function() {
 
-            if (randomCellNums.includes(gridCell.classList[1])) {
-
-                // Rimuovo numero da cella e mostro pepe the frog
-                gridCell.removeChild(gridCell.firstChild);
-                let newHTML = `<img src="./img/pepe-the-frog.webp" alt="">`;
-                gridCell.insertAdjacentHTML('beforeend',newHTML);
-                // Stampo scritta 'hai perso
-                let youLooseDiv = `<div class="youloose badge text-bg-dark">HAI PERSO <br> PUNTEGGIO: ${punteggio} </div>`;
-                gridContainer.insertAdjacentHTML('beforeend',youLooseDiv);
-
-            } else {
-
-                // Cambio colore sfondo a cella
-                gridCell.classList.add('gridCellClick');
-                console.log('Hai cliccato sulla cella ' + gridCell.innerHTML);
-                // Aggiungo 1 al punteggio
-                punteggio += 1;
-
+            if (active) {
+                if (randomCellNums.includes(gridCell.classList[1])) {
+    
+                    // Rimuovo numero da cella e mostro pepe the frog
+                    gridCell.removeChild(gridCell.firstChild);
+                    let newHTML = `<img src="./img/pepe-the-frog.webp" alt="">`;
+                    gridCell.insertAdjacentHTML('beforeend',newHTML);
+                    // Stampo scritta 'hai perso'
+                    let youLooseDiv = `<div class="finalmessage badge text-bg-dark">HAI PERSO <br> PUNTEGGIO: ${score} </div>`;
+                    gridContainer.insertAdjacentHTML('beforeend',youLooseDiv);
+                    // Disattivo celle
+                    active = false;
+    
+                } else {
+    
+                    // Cambio colore sfondo a cella
+                    gridCell.classList.add('gridCellClick');
+                    console.log('Hai cliccato sulla cella ' + gridCell.innerHTML);
+                    // Aggiungo 1 al punteggio
+                    score += 1;
+                    // Se ho cliccato su tutte le celle senza perdere, disattivo le altre
+                    if (score == (cellNum - bombsNum)) {
+                        // Stampo scritta 'hai vinto'
+                        let youWinDiv = `<div class="finalmessage badge text-bg-dark">HAI VINTO <br> PUNTEGGIO: ${score} </div>`;
+                        gridContainer.insertAdjacentHTML('beforeend', youWinDiv);
+                        // Disattivo celle
+                        active = false;
+                    }
+    
+                }
             }
 
         })
