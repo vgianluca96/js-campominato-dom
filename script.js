@@ -13,19 +13,22 @@ btnGridGen.addEventListener('click', function(){
     // Cancello il contenuto di 'gridCont', così al click si azzera la griglia
     gridContainer.innerHTML = '';
     
-    // Creo variabile per numero celle
+    // Dichiaro variabile per numero celle
     let cellNum = Number(selectDifficulty.value);
     
-    // Creo variabile per il punteggio
-    let score = 0;
-
-    // Creo variabile per disattivare celle se partita termina
+    // Dichiaro variabile per disattivare celle se partita termina
     let active = true;
 
+    // Dichiaro variabile per il punteggio
+    let score = 0;
+    
+    // Dichiaro variabile che mi dice se una cella è già stata cliccata
+    let alreadyClicked = [];
+    
     // Scelgo numero bombe
     let bombsNum = 16;
 
-    // Creo array di numeri random per le celle con la bomba
+    // Dichiaro array di numeri random per le celle con la bomba
     let bombCellId = [];
     let i = 0;
     while (bombCellId.length < bombsNum) {
@@ -39,6 +42,7 @@ btnGridGen.addEventListener('click', function(){
     }
 
     console.log(bombCellId);
+
     
     // Aggiungo celle a 'gridCont'
     for (let i = 1; i <= cellNum; i++) {
@@ -50,6 +54,9 @@ btnGridGen.addEventListener('click', function(){
         gridCell.innerHTML = i;
         // Aggiungo la cella a 'gridCont'
         gridContainer.append(gridCell);
+
+        // Inizializzo il valore (i-1)-esimo
+        alreadyClicked[i-1] = false;
 
         //Aggiungo azione al click sulla cella
         gridCell.addEventListener('click', function() {
@@ -73,8 +80,14 @@ btnGridGen.addEventListener('click', function(){
                     // Cambio colore sfondo a cella
                     gridCell.classList.add('gridCellClick');
                     console.log('Hai cliccato sulla cella ' + gridCell.innerHTML);
-                    // Aggiungo 1 al punteggio
-                    score += 1;
+                    
+                    // verifico non sia già stato cliccato sulla cella
+                    if (!alreadyClicked[i-1]) {
+                        alreadyClicked[i-1] = true;
+                        // Aggiungo 1 al punteggio
+                        score += 1;
+                    }
+
                     // Se ho cliccato su tutte le celle senza perdere, disattivo le altre
                     if (score == (cellNum - bombsNum)) {
                         // Stampo scritta 'hai vinto'
